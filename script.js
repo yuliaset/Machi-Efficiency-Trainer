@@ -780,11 +780,11 @@ function analyzeBlock(block) {
     }
   }
 
-  if (n === 3 && 
+  if (n === 3 && ( 
   (n1 === n2 && 
   n3 === n1 + 2) ||
   (n2 === n3 && 
-  n1 === n2 + 2)
+  n1 === n2 + 2))
       ) {
     return "par kanchan: \neficiência: " + (evaluateShape([n1, n2, n3]).completesMeld/70*100).toFixed(2) + "%\nmelhora: " + (evaluateShape([n1, n2, n3]).betterWait/70*100).toFixed(2) + "%";
   }
