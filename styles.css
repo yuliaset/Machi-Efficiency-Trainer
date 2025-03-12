@@ -18,6 +18,7 @@ body {
     background-color: white;
     outline-offset: 0px;
     cursor: pointer; /* indicates interactivity */
+    height:90px
   }
   /* New style: add a green glow to the selected tile */
   .tile.selected {
