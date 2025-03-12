@@ -9,6 +9,7 @@ body {
     background: url('images/background.png') no-repeat center center fixed;
     background-size: cover;
     text-align: left;
+    zoom: "80%"
   }
   .tile {
     width: 60px;
