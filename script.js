@@ -8,7 +8,7 @@ function selectTile(event) {
     selectedTile.classList.remove("selected");
   }
   selectedTile = event.target;
-  console.log("a");
+  //console.log("a");
   selectedTile.classList.add("selected");
 }
 
@@ -154,9 +154,9 @@ function evaluateShape(shape) {
 function generateHand() {
   deck = createDeck();
   deck = shuffle(deck).slice(0, 18);
-  console.log(deck);
+  //console.log(deck);
   const handTiles = deck.slice(0, 14);
-  const drawnTile = deck.slice(deck.length, deck.length);
+  const drawnTile = deck.slice(deck.length-1, deck.length);
   deck.slice(0, 1)[0];
 
   currentHand = handTiles.concat([drawnTile]);
@@ -202,6 +202,7 @@ function displayHand(handTiles, drawnTile) {
   drawnImg.className = "tile";
   drawnImg.addEventListener("click", selectTile);
   drawnTileDiv.appendChild(drawnImg);
+  console.log(drawnImg.src)
 }
 
 function replaceTile(event) {
@@ -210,8 +211,8 @@ function replaceTile(event) {
     return;
   }
   if (event.target.parentNode.id !== "hand") return;
-  console.log(deck.length);
-  console.log(deck);
+  //console.log(deck.length);
+  //console.log(deck);
 
   const handDiv = document.getElementById("hand");
   const drawnTileDiv = document.getElementById("drawnTile");
@@ -680,7 +681,7 @@ function buildBlocks(parsedTiles) {
       }
     }
     tiles.forEach((i) => {
-      console.log(i);
+      //console.log(i);
     });
     
     if (hakuIndices.length === 3) {
