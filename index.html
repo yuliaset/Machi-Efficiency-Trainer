@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Riichi Mahjong Efficiency Analysis</title>
+  <!-- Favicon now loads from the images folder -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Análise de Eficiência - Riichi Mahjong</h1>
+  <div id="hand"></div>
+  <div id="drawnTile"></div>
+  <div id="tileCount" style="margin: 10px; font-size: 20px;"></div>
+
+  <button onclick="generateHand()">Nova mão</button>
+
+  <br><br>
+
+  <h2 id="sortedHandTitle">Mão organizada</h2>
+  <div id="sortedHand"></div>
+  
+  <h2 id="blocksTitle">Blocos</h2>
+  <div id="blocks"></div>
+
+  <!-- New Efficiency section -->
+  <h2 id="efficiencyTitle">Eficiência</h2>
+  <div id="efficiency"></div>
+
+  <!-- The pinned image remains as before -->
+  <img id="girlImage" src="girl.png" alt="Girl" />
+
+  <script src="script.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <div id="scrollableTextbox">
+    <p><b><i>O quê significa "melhora"?</i></b></p>
+    <p>A porcentagem de melhora se refere a quantas pedras no jogo têm potencial de melhorar sua espera. Por exemplo, uma espera kanchan 46 (de eficiência 5.71%) pode tornar-se uma espera ryanmen 34 (de eficiência 11.43%) com a compra do 3. O mesmo cálculo pode, de certa forma, ser feito para pedras isoladas, mas é mais simples dividir as pedras isoladas em quatro grupos: pontas (1 e 9), pedras coladas em pontas (2 e 8), pedras intermediárias (3 a 7) e ventos/dragões. As pontas não possuem potencial de formação de ryanmen, apenas kanchan interno (o kanchan mais ineficiente) e penchan. As pedras 2 e 8 conseguem formar esperas ryanmen, mas apenas com um dos lados da espera, sendo o outro uma espera penchan ineficiente. Pedras intermediárias conseguem formar todos tipos de esperas, sendo portanto as mais eficientes e com maior potencial de melhora. Ventos e dragões, apesar de possuírem baixo ukeire, podem se tornar mais úteis com o uso do ponk, além de poderem contribuir para certos yakus em forma de par, sendo portanto um caso a parte. As porcentagens de espera e melhora dos pares se referem à possibilidade de formação de trincas ou de estruturas complexas, portanto devem ser analisadas com cautela em casos onde se possui apenas um par.</p>
+    <p><b><i>Descartes e Teoria dos 5 Blocos</i></b></p>
+    <p>Excluindo yakus específicos (por exemplo, chiitoitsu e kokushi musou), o objetivo de uma mão de mahjong é alcançar 4 grupos e um par, totalizando 5 blocos. Logo, qualquer coisa que não se encaixe em 5 blocos deve ser, exceto em certos casos estratégicos (teoria de 6 blocos), descartada. De forma geral, as escolhas possiveis de descarte são:
+        <br>1. Pedras isoladas
+        <br>2. Pedras que fazem parte de esperas complexas (por exemplo, 8 em 788)
+        <br>3. Cortar um grupo em formação ou um par (por exemplo, descartar uma espera 13 em caso de uma compra melhor, ou descartar um par quando se têm três na mão.)
+        <br>4. Descartar um grupo formado (um caso específico para a busca de um yaku que dê mais pontos.)
+        <br><br>
+        No caso de se descartar uma pedra isolada, pedras com baixo potencial de formação de boas esperas devem ser priorizadas (de forma geral: 1, 2, 8, 9). No caso de esperas complexas, deve se priorizar manter a espera de maior eficiência. 
+        <br>Por exemplo, no grupo 3357 há a opção de descartar o 3 e manter uma espera ryankan 357 de eficiência 11.43% e melhora 35.71%, ou descartar o 7 e manter um par kanchan 335, de eficiência 8.57% e melhora 27.14%. A única vantagem de se manter o grupo 335 é a possibilidade de pon ou par, mas em um caso de mão fechada o ryankan é a melhor escolha.
+    </p>
+    <p>
+        <b><i>Como é calculada a eficiência?</i></b>
+    </p>
+    <p>
+        O grau de eficiência de uma espera é, por definição, a probabilidade de se completa-lá. No caso deste simples simulador podemos utilizar o seguinte método: Seja \( n \) o número de cópias vencedoras da pedras \( T \) restantes no muro, \( R \) o número total de pedras restantes na parede e \( k \) o número de descartes na mesa (ou peças que você pode verificar). Então, a probabilidade \( P \) de completar sua espera (isto é, tirar pelo menos uma peça \( T \) vencedora) é dada pela fórmula hipergeométrica:
+    </p>
+    <p>
+      \[
+      P = 1 - \frac{\binom{R-n}{k}}{\binom{R}{k}}
+      \]
+    </p>
+    <p>
+      Esta expressão calcula a probabilidade de obter pelo menos uma peça \( T \) em \( k \) compras, subtraindo a probabilidade de não tirar nenhuma das \( n \) peças vencedoras.
+    </p>
+    <p>
+      No caso especial de uma única compra (\( k = 1 \)), a fórmula se simplifica para:
+    </p>
+    <p>
+      \[
+      P = \frac{n}{R}
+      \]
+    </p>
+    <p>
+        Para uma espera ryanmen, por exemplo 56, esperamos por duas pedras diferentes (neste caso, 4 e 7). Assumindo um caso ideal (primeiro descarte do jogo), temos 70 pedras totais no muro e 4 pedras de cada espera, totalizando 8 esperas:
+    </p>
+    <p>
+        \[
+        P = \frac{n}{R} = \frac{8}{70} \approx 11.43\%
+        \]
+    </p>
+    <p>
+        Em uma situação real de jogo, temos que calcular a eficiência de esperas em meio a multiplos descartes dos oponentes, o que influência diretamente nas varíaveis \( n \) e \( R \). Neste simulador assumimos um caso ideal onde estes valores são fixos, mas de forma geral este modelo ainda representa bem o suficiente uma situação de jogo para fins de aprendizado.
+    </p>
+    <p>Para os curiosos, no caso de um jogo real a fórmula para o cálculo da probabilidade de se completar uma espera em \( k \) turnos (assumindo-se que a pedra esperada não é comprada ou descartada antes de \( k \)) é: </p>
+    <p>
+        \[
+        P_k(R,n) = \frac{n}{R} + \left(1-\frac{n}{R}\right) \frac{\binom{R-1-n}{3}}{\binom{R-1}{3}} \, P_{k-1}(R-4,n), \quad P_0(R,n)=0.
+        \]
+    </p>
+    <p>ou, em forma de produto:</p>
+    <p>
+        \[
+P_k(R,n) = 1 - \prod_{i=0}^{k-1} \left[ \left(1-\frac{n}{R-4i}\right) \frac{\binom{R-1-4i-n}{3}}{\binom{R-1-4i}{3}} \right].
+\]
+    </p>
+    <p>A mutação monstruosa na fórmula se da ao fato que é necessário considerar-se três descartes adicionais de cada jogador a cada turno. <a href="https://gitlab.com/mahjulia/machi-probability-theory/">Para mais detalhes clique aqui.</a> </p>
+</div>
+</body>
+</html>

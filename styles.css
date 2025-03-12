@@ -1,0 +1,94 @@
+/* 
+   1) Change the body font to NSimSun 
+   2) Add a page background with background.png 
+*/
+body {
+    font-family: 'NSimSun', 'SimSun', serif;
+    margin: 0;
+    padding: 0;
+    background: url('images/background.png') no-repeat center center fixed;
+    background-size: cover;
+    text-align: left;
+  }
+  .tile {
+    width: 60px;
+    margin: 2px;
+    outline: 1px solid black;
+    background-color: white;
+    outline-offset: 0px;
+    cursor: pointer; /* indicates interactivity */
+  }
+  /* New style: add a green glow to the selected tile */
+  .tile.selected {
+    box-shadow: 0 0 10px 2px green;
+  }
+  #hand, #drawnTile, #sortedHand, #blocks {
+    margin: 20px 0;
+    margin-left: 10px; /* a few pixels from the left */
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  /* The drawn tile appears to the right with extra margin */
+  #drawnTile {
+    margin-right: 60px;
+  }
+  .block {
+    border: 1px dashed #333;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+  }
+  h1, h2, button {
+    /* 
+       Optionally, ensure headings/buttons also use NSimSun 
+       (some browsers might need this to override defaults). 
+    */
+    font-family: 'NSimSun', 'SimSun', serif;
+    background-color: rgba(255, 255, 255, 0.7); /* a bit more transparent than 0.8 */
+    margin: 10px; 
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 30px;
+  }
+  /* Position the girl.png image at the bottom-right */
+  #girlImage {
+    position: fixed;
+    width: auto;
+    height: 400px;
+    bottom: 0;
+    right: 0;
+  }
+  /* By default, hide the sorted/blocks sections and the new Efficiency section */
+  #sortedHandTitle, #blocksTitle, #sortedHand, #blocks,
+  #efficiencyTitle {
+    display: none;
+    font-size: 30px;
+  }
+  #efficiency {
+    display: none;
+    color: white;
+    font-size: 40px;
+    margin: 10px;
+  }
+  #tileCount{
+    color: white;
+  }
+  #scrollableTextbox {
+    position: fixed;
+    font-size: 20px;
+    top: 20px;         /* distance from the top */
+    right: 20px;       /* distance from the right */
+    width: 800px;
+    height: 350px;
+    background-color: rgba(0, 0, 0, 0.5); /* low opacity black background */
+    color: white;
+    border: 2px solid white;  /* outline */
+    padding: 10px;
+    resize: none;      /* prevents manual resizing */
+    overflow: auto;    /* adds scrollbar when content overflows */
+    z-index: 100;      /* ensures it appears above the girl's image */
+    font-family: 'NSimSun', 'SimSun', serif;
+  }
+  
